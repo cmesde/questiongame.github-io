@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <style>
+    body {
+      margin: 0;
+      overflow: hidden;
+      cursor: none;
+      background-color: rgb(243, 133, 133);
+    }
+
+    .stationary-button {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    .moving-button, .stationary-button button {
+      position: absolute;
+      cursor: pointer;
+      background-color: yellow;
+      color: black;
+      padding: 5px;
+    }
+
+    .paragraph {
+        position:absolute;
+        top: 30%;
+        left: 50%;
+        transform: translate(-45%, -45%);
+        font-weight: bolder;
+        font-size: 40px;
+    }
+  </style>
+</head>
+<body>
+  <div class="stationary-button">
+    <button type="button" class="btn btn-outline-secondary" onclick="playMusicAndChangeText()">Yes!</button>
+  </div>
+
+  <div class="moving-button" id="movingButton">No!</div>
+
+  <div class="paragraph">
+    <p id="message">Do you miss me?</p>
+  </div>
+
+  <audio id="music" src="fallen.mp3" volume="0"></audio>
+
+  <script>
+    const movingButton = document.getElementById('movingButton');
+    
+    document.addEventListener('mousemove', (event) => {
+      const x = event.clientX;
+      const y = event.clientY;
+      const buttonRect = movingButton.getBoundingClientRect();
+
+      const distance = Math.sqrt(
+        Math.pow(x - (buttonRect.left + buttonRect.width / 2), 2) +
+        Math.pow(y - (buttonRect.top + buttonRect.height / 2), 2)
+      );
+
+      if (distance < 50) {
+        const maxX = window.innerWidth - buttonRect.width;
+        const maxY = window.innerHeight - buttonRect.height;
+        const newX = Math.random() * maxX;
+        const newY = Math.random() * maxY;
+        movingButton.style.left = `${newX}px`;
+        movingButton.style.top = `${newY}px`;
+      }
+    });
+
+    function playMusicAndChangeText() {
+      const audio = document.getElementById('music');
+      audio.play();
+      setTimeout(() => {
+        const message = document.getElementById('message');
+        message.textContent = "Yieee miss you din ";
+      }, 1000); // Change the delay time as needed
+    }
+  </script>
+</body>
+</html>
